@@ -29,7 +29,7 @@ def call(boolean abortPipeline, boolean qgResult, String branch ){
             error 'Master branch selected, abort pipeline.'
         }
         
-        if (branchName.startsWith('hotfix/')) {
+        if (branch.startsWith('hotfix/')) {
             error 'Hotfix branch selected, abort pipeline.'        
         }
         
