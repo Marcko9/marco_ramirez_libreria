@@ -20,13 +20,22 @@ def call(boolean abortPipeline, boolean qgResult, String branch ){
             qgResult = true
             error "Pipeline aborted due to quality gate failure: ${qg.status}"
         }
+    }
 
-        waitForQualityGate abortPipeline: true
-        if (abortPipeline) {
-            error 'Marcko - Abort pipeline.'       
-        } else {
-            echo 'Marcko - Pipeline OK'
+    if (abortPipeline) {
+        error 'Boolean variable - Abort pipeline by user'       
+    } else {
+        if(branch == 'master'){
+            error 'Master branch selected, abort pipeline.'
         }
+        
+        if (branchName.startsWith('hotfix/')) {
+            error 'Hotfix branch selected, abort pipeline.'        
+        }
+        
+        
+        echo 'Marcko - Pipeline OK'
     }
 
 }
+
