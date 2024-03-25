@@ -1,4 +1,4 @@
-def call(boolean abortPipeline){
+def call(boolean abortPipeline, bool qgResult){
     
     def scannerHome = tool 'sonar-scanner'
     
@@ -12,7 +12,14 @@ def call(boolean abortPipeline){
         """
     }
 
-    timeout(time: 1, unit: 'MINUTES') {
+    timeout(time: 5, unit: 'MINUTES') {
+        def qg = waitForQualityGate()
+        if (qg.status != 'OK') {
+            qgResult = true
+            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        }
+        
+        waitForQualityGate abortPipeline: true
         if (abortPipeline) {
             error 'Marcko - Abort pipeline.'       
         } else {
