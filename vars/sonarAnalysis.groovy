@@ -1,6 +1,8 @@
-def call(boolean abortPipeline, boolean qgResult){
+def call(boolean abortPipeline, boolean qgResult, String branch ){
     
     def scannerHome = tool 'sonar-scanner'
+
+    echo '${branch}'
     
     withSonarQubeEnv(credentialsId: 'sonar-token-new'){
         sh """
